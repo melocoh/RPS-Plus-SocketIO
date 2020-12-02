@@ -37,22 +37,35 @@ var players = [];
 
 //Function to calculate winner
 function getWinner(p, c) {
+    
     if (p === c) {
         return "draw";
     } else if (p === "rock") {
-        if (c === "paper") {
+        if (c === "paper" || c === "spock") {
             return "2";
         } else {
             return "1";
         }
     } else if (p === "paper") {
-        if (c === "scissors") {
+        if (c === "scissors" || c === "lizard") {
             return "2";
         } else {
             return "1";
         }
     } else if (p === "scissors") {
-        if (c === "rock") {
+        if (c === "rock" || c === "spock") {
+            return "2";
+        } else {
+            return "1";
+        }
+    } else if (p === "lizard") {
+        if (c === "rock" || c === "scissors") {
+            return "2";
+        } else {
+            return "1";
+        }
+    } else if (p === "spock") {
+        if (c === "paper" || c === "lizard") {
             return "2";
         } else {
             return "1";
