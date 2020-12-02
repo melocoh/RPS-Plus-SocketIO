@@ -4,7 +4,7 @@ const randomstring = require('randomstring');
 
 const express = app();
 
-const server=express.listen(4000,()=>{
+const server=express.listen(process.env.PORT || 4000,()=>{
     console.log("server started at http://localhost:4000");
 })
 
