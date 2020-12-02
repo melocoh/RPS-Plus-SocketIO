@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Inconsolata&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
 
 * {
   margin: 0;
@@ -6,8 +6,20 @@
   box-sizing: border-box;
 }
 
+#instructions {
+  margin: 25px 0px;
+}
+
+#score {
+  margin-top: 15px;
+}
+
+.container {
+  text-align: center;
+}
+
 body {
-  font-family: "Inconsolata", monospace;
+  font-family: 'Comic Neue', cursive;
   line-height: 1.6;
 }
 
@@ -22,50 +34,17 @@ header {
 }
 
 .paper {
-  color: #01a3a4;
+  color: #86b1f6;
 }
 
 .scissors {
   color: #feca57;
 }
 
-.play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+.spock {
+  color: #dcacea;
 }
 
-.play h1 {
-  margin-bottom: 10px;
-}
-.play a {
-  text-decoration: none;
-  outline: none;
-  border: none;
-}
-
-.play a:nth-child(2) {
-  background: #feca57;
-  color: whitesmoke;
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
-.play a:nth-child(2):hover {
-  color: #333;
-  opacity: 0.8;
-}
-
-.play a:nth-child(5) {
-  background: #333;
-  color: #feca57;
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
-.play a:nth-child(5):hover {
-  color: #feca57;
-  opacity: 0.8;
+.lizard {
+  color: #9ce1a1;
 }
