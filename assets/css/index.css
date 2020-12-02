@@ -10,8 +10,20 @@
   margin: 25px 0px;
 }
 
-#score {
-  margin-top: 15px;
+.menu {
+  margin: 20px 0px;
+}
+
+.new {
+  margin: 25px 0px;
+}
+
+.join {
+  margin-top: 25px;
+}
+
+#msg {
+  margin-top:4px;
 }
 
 .container {
