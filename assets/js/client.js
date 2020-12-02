@@ -87,10 +87,11 @@ socket.on("informAboutExit", function (data) {
         leaver
     } = data
     if (confirm(`Player ${leaver.name} left the game. Do you want to go back to play with computer? `)) {
-        history.back();
+        location.reload();
+    //     history.back();
     //     window.location = "/computer";
     // } else {
-        // window.location = "/";
+    //     window.location = "/";
     }
 })
 //Player1 Joined Game Listener
