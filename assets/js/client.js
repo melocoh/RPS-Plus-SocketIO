@@ -1,6 +1,7 @@
 //MAKE CONNECTION TO THE SOCKET
 // var socket = io.connect("http://localhost:3000");
-var socket = io.connect("http://localhost:3000" || "https://comp3940-rps-plus.herokuapp.com");
+// var socket = io.connect("http://localhost:3000" || "https://comp3940-rps-plus.herokuapp.com");
+var socket = io.connect("https://comp3940-rps-plus.herokuapp.com");
 
 //VARIABLES AND CONSTANTS
 let playerChoice = "";
