@@ -1,7 +1,6 @@
 //MAKE CONNECTION TO THE SOCKET
 // var socket = io.connect("http://localhost:3000");
-// var socket = io.connect("http://localhost:3000" || "https://comp3940-rps-plus.herokuapp.com");
-var socket = io.connect("https://comp3940-rps-plus.herokuapp.com");
+var socket = io.connect("https://comp3940-rps-plus.herokuapp.com/");
 
 //VARIABLES AND CONSTANTS
 let playerChoice = "";
@@ -26,28 +25,6 @@ const scoreboard = {
 };
 
 //EMIT EVENTS
-
-//Chat Event Listener
-btn.addEventListener("click", function () {
-    if (message.value) {
-        socket.emit("chat", {
-            message: message.value,
-            handle: playerName,
-            room: roomID
-        });
-    }
-});
-//Typing Event Listener
-message.addEventListener("keydown", function () {
-    socket.emit("typing", {
-        room: roomID,
-        player: playerName
-    });
-});
-// Clear the Message
-btn.addEventListener("click", () => {
-    message.value = "";
-});
 
 //GAME EVENTS
 
