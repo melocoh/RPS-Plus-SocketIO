@@ -25,8 +25,10 @@ const scoreboard = {
     player2: 0
 };
 
+var socket = io.connect();
+
 // uncomment for socket connection in localhost on node, and comment out line 26
-var socket = io.connect("http://localhost:3000");
+// var socket = io.connect("http://localhost:3000");
 
 // uncomment for socket connectin in the heroku server, and comment out line 22
 // var socket = io.connect("https://comp3940-rps-plus.herokuapp.com/");

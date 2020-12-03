@@ -8,23 +8,38 @@ var socket = require("socket.io");
 var randomstring = require("randomstring");
 const path = require('path');
 
+var server = require('http').createServer(app);
+
+/** Server code **/
+server.listen(process.env.PORT || 3000);
+console.log('Server running...');
+
+// app setup type and and imports
 app.set("view engine", "ejs");
 app.use(express.static("assets"));
 
+// app starts from index
 app.get("/", function(req, res) {
     res.render("index");
 });
 
-//Server Setup
-if (process.env.PORT) {
-    var server = app.listen(process.env.PORT||80, process.env.IP, function() {
-        console.log("THe Server is running");
-    });
-} else {
-    var server = app.listen(3000, function() {
-        console.log("THe Server is running");
-    });
-}
+
+/////////////////////////////////////////////
+////////////// SERVER ACTIVITY //////////////
+/////////////////////////////////////////////
+
+// Sets up server to the correct port
+
+// for deployed app
+// if (process.env.PORT) {
+//     var server = app.listen(process.env.PORT||80, process.env.IP, function() {
+//         console.log("Server running...");
+//     });
+// } else {
+//     var server = app.listen(3000, function() {
+//         console.log("Server running...");
+//     });
+// }
 
 //Socket Setup
 var io = socket(server);
