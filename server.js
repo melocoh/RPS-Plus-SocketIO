@@ -4,11 +4,11 @@
 
 var express = require("express");
 var app = express();
-var socket = require("socket.io");
-var randomstring = require("randomstring");
-const path = require('path');
-
 var server = require('http').createServer(app);
+// var socket = require("socket.io");
+var randomstring = require("randomstring");
+
+connections = [];
 
 /** Server code **/
 server.listen(process.env.PORT || 3000);
@@ -28,21 +28,13 @@ app.get("/", function(req, res) {
 ////////////// SERVER ACTIVITY //////////////
 /////////////////////////////////////////////
 
-// Sets up server to the correct port
-
-// for deployed app
-// if (process.env.PORT) {
-//     var server = app.listen(process.env.PORT||80, process.env.IP, function() {
-//         console.log("Server running...");
-//     });
-// } else {
-//     var server = app.listen(3000, function() {
-//         console.log("Server running...");
-//     });
-// }
+/////////////////////////////////////////////
+////////////// SOCKET ACTIVITY //////////////
+/////////////////////////////////////////////
 
 //Socket Setup
 var io = socket(server);
+
 //GAME VARIABLES
 var choice1 = "",
     choice2 = "";
@@ -53,33 +45,33 @@ var players = [];
 //Function to calculate winner
 function getWinner(p, c) {
     
-    if (p === c) {
+    if (p === c) {  // if tie
         return "draw";
-    } else if (p === "rock") {
+    } else if (p === "rock") {  // if rock
         if (c === "paper" || c === "spock") {
             return "2";
         } else {
             return "1";
         }
-    } else if (p === "paper") {
+    } else if (p === "paper") {  // if paper
         if (c === "scissors" || c === "lizard") {
             return "2";
         } else {
             return "1";
         }
-    } else if (p === "scissors") {
+    } else if (p === "scissors") { // if scissors
         if (c === "rock" || c === "spock") {
             return "2";
         } else {
             return "1";
         }
-    } else if (p === "lizard") {
+    } else if (p === "lizard") {  // if lizard
         if (c === "rock" || c === "scissors") {
             return "2";
         } else {
             return "1";
         }
-    } else if (p === "spock") {
+    } else if (p === "spock") {   // if spock
         if (c === "paper" || c === "lizard") {
             return "2";
         } else {
@@ -100,7 +92,10 @@ function result(roomID) {
 }
 //Socket Connection
 io.on("connection", function(socket) {
-    console.log("made connection with socket");
+
+    // @onConnect
+    connections.push(socket);
+    console.log('Connected: %s sockets connected', connections.length);
 
     //Disconnect
     socket.on("disconnect", function(data) {

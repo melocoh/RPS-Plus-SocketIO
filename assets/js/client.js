@@ -16,6 +16,8 @@ let btn = document.getElementById("send");
 let output = document.getElementById("output");
 let feedback = document.getElementById("feedback");
 
+var socket = io.connect();
+
 const choices = document.querySelectorAll(".choice");
 const score = document.getElementById("score");
 const result = document.getElementById("result");
@@ -24,14 +26,6 @@ const scoreboard = {
     player1: 0,
     player2: 0
 };
-
-var socket = io.connect();
-
-// uncomment for socket connection in localhost on node, and comment out line 26
-// var socket = io.connect("http://localhost:3000");
-
-// uncomment for socket connectin in the heroku server, and comment out line 22
-// var socket = io.connect("https://comp3940-rps-plus.herokuapp.com/");
 
 /////////////////////////////////////////
 ////////////// GAME EVENTS //////////////
