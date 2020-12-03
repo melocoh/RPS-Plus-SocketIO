@@ -1,5 +1,5 @@
 /**
- *  Client side JS file that is responsible for emit activities in this application
+ *  client.js is responsible for emiting activities in this application.
  *  It is the equivalent of broadcasting in Socket.io, but it allows the
  *  sending of objects.
  */
