@@ -1,8 +1,9 @@
-//MAKE CONNECTION TO THE SOCKET
-// var socket = io.connect("http://localhost:3000");
-var socket = io.connect("https://comp3940-rps-plus.herokuapp.com/");
+/**
+ *  Client side JS file that is responsible for emit activities in this application
+ *  It is the equivalent of broadcasting in Socket.io, but it allows the
+ *  sending of objects.
+ */
 
-//VARIABLES AND CONSTANTS
 let playerChoice = "";
 let opponentChoice;
 let winner;
@@ -24,53 +25,86 @@ const scoreboard = {
     player2: 0
 };
 
-//EMIT EVENTS
+// uncomment for socket connection in localhost on node, and comment out line 26
+var socket = io.connect("http://localhost:3000");
 
-//GAME EVENTS
+// uncomment for socket connectin in the heroku server, and comment out line 22
+// var socket = io.connect("https://comp3940-rps-plus.herokuapp.com/");
 
+/////////////////////////////////////////
+////////////// GAME EVENTS //////////////
+/////////////////////////////////////////
+
+// disconnect function with an emit event that shows room id
 function disconnect() {
     socket.emit("disconnect", {
         room: roomID
     });
 }
 
-//Create New Game Listener
+// new game onClick listener
 $("#new").on("click", function () {
+    
+    // player type is host
     playerType = true;
+    
+    // sets username as player 1's name
     playerName = $("#nameNew").val();
     $("#player1Name").html(playerName);
+
+    // if user doesn't enter a name
     if (!playerName) {
         alert("Please enter your name.");
         return;
     }
+
+    // emit event for createGame thase sends player name
     socket.emit("createGame", {
         name: playerName
     });
+
+    // makes menu invisible and gameboard visible
     $(".menu").fadeOut();
     $(".gameBoard").fadeIn();
 });
-//Join Game Listener
+
+// join game onClick listener
 $("#join").on("click", function () {
+
+    // player type is not host
     playerType = false;
+    
+    // sets username as player 2's name
     var name = $("#nameJoin").val();
     playerName = name;
     $("#player2Name").html(name);
+
+    // receives room id to join game
     roomID = $("#room").val();
+
+    // if room id doesn't exist
     if (!name || !roomID) {
         alert("Please enter your name and game ID.");
         return;
     }
+
+    // emit event for joinGame that sends player name and room id
     socket.emit("joinGame", {
         name: name,
         room: roomID
     });
+
+    // makes menu invisible and gameboard visible
     $(".menu").fadeOut();
     $(".gameBoard").fadeIn();
 });
 
-//UI UPDATE EVENTS
+//////////////////////////////////////////////
+////////////// UI UPDATE EVENTS //////////////
+//////////////////////////////////////////////
 
-//New Game Welcome Wait Event Listener
+// on newGame listener
+// diplays welcome message, new room id and waits for player 2
 socket.on("newGame", function (data) {
     var message =
         "Hello, " +
@@ -79,24 +113,28 @@ socket.on("newGame", function (data) {
         data.room +
         ". Waiting for player 2...";
     roomID = data.room;
+    
     $("#msg").html(message);
 });
-// When one player leaves. Another player should get notified
+
+// on informAboutExit listener
+// when one player leaves, other player gets notified
+// and is offered to return to start menu
 socket.on("informAboutExit", function (data) {
     var {
         leaver
     } = data
+    
     if (confirm(`Player ${leaver.name} left the game. Do you want to go back to play with computer? `)) {
         location.reload();
-    //     history.back();
-    //     window.location = "/computer";
-    // } else {
-    //     window.location = "/";
     }
 })
-//Player1 Joined Game Listener
+
+// on player1 start game listener
+// sets the ui for player 1's room when the game starts
 socket.on("player1", function (data) {
     var message = "Hello , " + playerName;
+
     $("#msg").html(message);
     $("#player2Name").html(data.oppName);
     socket.emit("joinedGame", {
@@ -105,23 +143,30 @@ socket.on("player1", function (data) {
     });
     $(".gamePlay").css("display", "block");
 });
-//Player2 Joined Game Listener
+
+// on player2 start game listener
+// sets the ui for player 1's room when the game starts
 socket.on("player2", function (data) {
     var message = "Hello , " + playerName;
     $("#opposite-player-name").html(playerName);
     $("#msg").html(message);
 });
-//Update the Creater's Name Listener
+
+// on welcomeGame listener
+// sets the displays the players' names in the game room
 socket.on("welcomeGame", function (data) {
     $("#player1Name").html(data);
     $("#opposite-player-name").html(data);
     $(".gamePlay").css("display", "block");
 });
-//Error Listener
+
+// on error listener
 socket.on("err", function (err) {
     alert(err.message);
     location.reload();
 });
+
+
 //Result Listener
 socket.on("result", function (data) {
     if (playerType) {
@@ -133,10 +178,13 @@ socket.on("result", function (data) {
     playerChoice = "";
 });
 
+////////////////////////////////////////////
+////////////// GAME MECHANICS //////////////
+////////////////////////////////////////////
 
-// Play game
+// function for playing the game
+// takes in the player's choice
 function play(e) {
-    //restart.style.display = "inline-block";
     if (playerChoice === "") {
         playerChoice = e;
         $("#" + e).css("color", "#c72121");
@@ -154,63 +202,63 @@ function play(e) {
     }
 }
 
+// player's choice onClick Listener
+$(".choices").on('click', '[data-fa-i2svg]', function () {
+    play($(this)[0].id);
+});
+
+// function for displaying the players' choices
 function ResultDisplay(res, opponentChoice) {
     result.innerHTML = `
-      <h1 class="text-${res}">You ${res.charAt(0).toUpperCase() +
-    res.slice(1)}</h1>
+      <h1 class="text-${res}">You ${res.charAt(0).toUpperCase() + res.slice(1)}</h1>
       <i class="fas fa-hand-${opponentChoice} fa-10x"></i>
       <p>Opponent Chose <strong>${opponentChoice.charAt(0).toUpperCase() +
         opponentChoice.slice(1)}</strong></p>
     `;
 }
 
+// function for displaying the winning result
 function showWinner(winner, opponentChoice) {
+
+    // if player 1 wins
     if (winner === "1") {
-        // Inc player score
+
+        // increments player's score
         scoreboard.player1++;
-        // Show modal result
+
+        // show modal result
         if (playerType) {
             ResultDisplay("win", opponentChoice);
         } else {
             ResultDisplay("lose", opponentChoice);
         }
-    } else if (winner === "2") {
-        // Inc computer score
+    } else if (winner === "2") { // if player 2 wins
+
+        // increments computer score
         scoreboard.player2++;
-        // Show modal result
+
+        // show modal result
         if (!playerType) {
             ResultDisplay("win", opponentChoice);
         } else {
             ResultDisplay("lose", opponentChoice);
         }
-    } else {
+    } else { // if it is a tie
         result.innerHTML = `
       <h1>It's A Draw</h1>
       <i class="fas fa-hand-${opponentChoice} fa-10x"></i>
       o
     `;
     }
-    // Show score
+
+    // show score of both players
     $("#score #p1").html(scoreboard.player1);
     $("#score #p2").html(scoreboard.player2);
 
+    // makes the modal visible and sets timer for the length of
+    // its display
     modal.style.display = "block";
     setTimeout(() => {
-        $('.modal').fadeOut(600)
+        $('.modal').fadeOut(850)
     }, 1000)
 }
-
-// Clear modal
-function clearModal(e) {
-    if (e.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-// Event listeners
-//choices.forEach(choice => choice.addEventListener("click", play));
-$(".choices").on('click', '[data-fa-i2svg]', function () {
-    play($(this)[0].id);
-});
-window.addEventListener("click", clearModal);
-//restart.addEventListener("click", restartGame);

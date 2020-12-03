@@ -1,27 +1,27 @@
-var expresss = require("express");
-var express = expresss();
+/**
+ *  Server side JS file that is responsible for server connection to port
+ */
+
+var express = require("express");
+var app = express();
 var socket = require("socket.io");
 var randomstring = require("randomstring");
 const path = require('path');
 
-express.set("view engine", "ejs");
-express.use(expresss.static("assets"));
+app.set("view engine", "ejs");
+app.use(express.static("assets"));
 
-express.get("/", function(req, res) {
+app.get("/", function(req, res) {
     res.render("index");
 });
 
-express.get("/loaderio-c22eb21e6fd039f5bb76ec284ff22809",(req,res)=>{
-    res.sendFile(path.join(__dirname+'/loaderio-c22eb21e6fd039f5bb76ec284ff22809.txt'));
-})
-
 //Server Setup
 if (process.env.PORT) {
-    var server = express.listen(process.env.PORT||80, process.env.IP, function() {
+    var server = app.listen(process.env.PORT||80, process.env.IP, function() {
         console.log("THe Server is running");
     });
 } else {
-    var server = express.listen(3000, function() {
+    var server = app.listen(3000, function() {
         console.log("THe Server is running");
     });
 }
