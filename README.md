@@ -1,4 +1,4 @@
-Rock Paper Scissors Plus - final project for COMP 3940.
+Rock Paper Scissors Plus
 
 Hosted link: https://comp3940-rps-plus.herokuapp.com
 
