@@ -1,6 +1,6 @@
 Rock Paper Scissors Plus
 
-Hosted link: https://comp3940-rps-plus.herokuapp.com
+Hosted link: https://rps-plus.herokuapp.com
 
 This application uses Node.js, Express, and Socket.io.
 
